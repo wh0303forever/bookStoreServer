@@ -1,14 +1,40 @@
-const buybook = function (callback) {
+const buybook = function (
+  book_id,
+  book_name,
+  buyer_id,
+  buyer_name,
+  order_price,
+  seller_id,
+  order_freight,
+  callback
+) {
   var mysql = require("mysql");
   var db = require("../../database/DBConfig");
   var connection = mysql.createConnection(db.mysql);
+  var updatebooknum = require("../bookdb/updatebooknum");
+  var insertorder = require("../orderdb/insertorder");
 
   connection.connect();
   connection.query(
-    "SELECT book_num FROM books where `book_id`=",
+    "SELECT book_num FROM books where `book_id`=" + book_id,
     function (error, results, fields) {
       if (error) throw error;
-      callback(error, results);
+      console.log(results[0].book_num);
+      if (results[0].book_num > 0) {
+        updatebooknum(book_id, results[0].book_num - 1);
+        insertorder(
+          book_id,
+          book_name,
+          order_price,
+          order_freight,
+          seller_id,
+          buyer_id,
+          buyer_name
+        );
+        callback("success", "购买成功");
+      } else {
+        callback("error", "已卖空！");
+      }
     }
   );
 };

@@ -30,15 +30,26 @@ router.get("/deleteorder", async (req, res) => {
 });
 
 router.get("/buy", async (req, res) => {
-  //返回到浏览器的数据
-  var id = req.query.book_id;
-  buybook(id, function (err, results) {
-    if (err) {
-      res.json({ data: {}, message: "error" });
-    } else {
-      res.json({ data: {}, message: "success" });
+  var book_id = req.query.book_id;
+  var book_name = req.query.book_name;
+  var buyer_id = req.query.buyer_id;
+  var buyer_name = req.query.buyer_name;
+  var order_price = req.query.order_price;
+  var seller_id = req.query.seller_id;
+  var order_freight = req.query.order_freight;
+
+  buybook(
+    book_id,
+    book_name,
+    buyer_id,
+    buyer_name,
+    order_price,
+    seller_id,
+    order_freight,
+    function (a1, a2) {
+      res.json({ data: { info: a2 }, message: a1 });
     }
-  });
+  );
 });
 
 module.exports = router;

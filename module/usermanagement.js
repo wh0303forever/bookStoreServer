@@ -4,6 +4,7 @@ var getUserInfo = require("../dao/userdb/getUserInfo");
 var login = require("../dao/userdb/login");
 var userisexist = require("../dao/userdb/userisexist");
 var register = require("../dao/userdb/register");
+var updatepassword = require("../dao/userdb/updatepassword");
 
 //router.get是处理GET请求的方法，router.post是处理POST请求的方法
 router.get("/getUserInfo", async (req, res) => {
@@ -29,6 +30,19 @@ router.get("/login", async (req, res) => {
       if (results[0] != undefined)
         res.json({ data: results[0], message: "登录成功" });
       else res.json({ data: {}, message: "登录失败" });
+    }
+  });
+});
+
+router.get("/updatepassword", async (req, res) => {
+  //返回到浏览器的数据
+  var id = req.query.user_id;
+  var password = req.query.password;
+  updatepassword(id, password, function (err, results) {
+    if (err) {
+      res.json({ data: {}, message: "error" });
+    } else {
+      res.json({ data: {}, message: "success" });
     }
   });
 });
