@@ -1,0 +1,16 @@
+const getUserInfo = function (id, callback) {
+  var mysql = require("mysql");
+  var db = require("../../database/DBConfig");
+  var connection = mysql.createConnection(db.mysql);
+
+  connection.connect();
+  connection.query(
+    "SELECT * FROM `users` WHERE `user_id`=" + id,
+    function (error, results, fields) {
+      if (error) throw error;
+      callback(error, results[0]);
+    }
+  );
+};
+
+module.exports = getUserInfo;

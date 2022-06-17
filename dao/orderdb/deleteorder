@@ -1,0 +1,16 @@
+const getorders = function (id, callback) {
+  var mysql = require("mysql");
+  var db = require("../../database/DBConfig");
+  var connection = mysql.createConnection(db.mysql);
+
+  connection.connect();
+  connection.query(
+    "UPDATE `order` SET `is_deleted`=1 WHERE `order_id`=" + id,
+    function (error, results, fields) {
+      if (error) throw error;
+      callback(error, results);
+    }
+  );
+};
+
+module.exports = getorders;

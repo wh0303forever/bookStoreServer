@@ -1,0 +1,18 @@
+const getorders = function (seller_id, callback) {
+  var mysql = require("mysql");
+  var db = require("../../database/DBConfig");
+  var connection = mysql.createConnection(db.mysql);
+
+  connection.connect();
+  connection.query(
+    "SELECT * FROM `order` where `seller_id`=" +
+      seller_id +
+      " and `is_deleted`=0",
+    function (error, results, fields) {
+      if (error) throw error;
+      callback(error, results);
+    }
+  );
+};
+
+module.exports = getorders;

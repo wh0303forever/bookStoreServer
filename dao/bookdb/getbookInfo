@@ -1,0 +1,16 @@
+const getbookInfo = function (id, callback) {
+  var mysql = require("mysql");
+  var db = require("../../database/DBConfig");
+  var connection = mysql.createConnection(db.mysql);
+
+  connection.connect();
+  connection.query(
+    "SELECT * FROM `books` WHERE `book_id`=" + id + " and `is_deleted`=0",
+    function (error, results, fields) {
+      if (error) throw error;
+      callback(error, results[0]);
+    }
+  );
+};
+
+module.exports = getbookInfo;

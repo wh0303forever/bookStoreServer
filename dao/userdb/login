@@ -1,0 +1,20 @@
+const login = function (username, password, callback) {
+  var mysql = require("mysql");
+  var db = require("../../database/DBConfig");
+  var connection = mysql.createConnection(db.mysql);
+
+  connection.connect();
+  connection.query(
+    "SELECT * FROM `users` WHERE `user_name`='" +
+      username +
+      "' and `user_password`='" +
+      password +
+      "'",
+    function (error, results, fields) {
+      if (error) throw error;
+      callback(error, results);
+    }
+  );
+};
+
+module.exports = login;
